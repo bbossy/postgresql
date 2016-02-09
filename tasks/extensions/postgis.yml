@@ -6,9 +6,11 @@
     state: present
     update_cache: yes
     cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
+  when: postgresql_version | version_compare('9.5', '>=' )
   with_items:
     - libgeos-c1
     - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}"
-    - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}-scripts"
+    - "{{postgresql_ext_postgis_scripts_package_name}}"
+
   notify:
     - restart postgresql
